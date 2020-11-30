@@ -2,32 +2,46 @@
 
 import pygame
 import time
-
-# initializing pygame
-
 pygame.init()
-
-# defining variables
 
 clock = pygame.time.Clock()
 ver = "Beta 0.1"
 autog = 0
 coins = 0
-display_width = 800
-display_height = 600
-white = (255, 255, 255)
+gameDisplay = pygame.display.set_mode((800, 600))
+gameDisplay.fill((255, 255, 255))
+pygame.display.set_caption("Memes Clicker 1.0")
+pygame.display.set_icon(pygame.image.load('.idea\icon.png'))
+
+
+font1 = pygame.font.SysFont('arial', 55)
+font2 = pygame.font.SysFont('arial', 25)
+green = (0, 153, 0)
+brightGreen = (0, 255, 0)
 black = (0, 0, 0)
 grey = (128, 128, 128)
 light_grey = (224, 224, 224)
+white = (255, 255, 255)
+rectWidth = 100
+rectHeight = 60
+mainText = font1.render("Memes Clicker", 1, black)
+version = font2.render("ver. 0.1", 1, black)
+startButton = font2.render("start", 1, black)
+menuButton = font2.render("options", 1, black)
+exitButton = font2.render("exit", 1, black)
 
-# creating display and caption
-
-gameDisplay = pygame.display.set_mode((display_width, display_height))
-pygame.display.set_caption("Memes cliker")
-
-
-# defining functions
-
+def button (x, y, w, h, action = None):
+    click = pygame.mouse.get_pressed()
+    if (x+w) > mopos[0] > x and (y+h) > mopos[1] > y:
+        pygame.draw.rect(gameDisplay, brightGreen, (x, y, w, h))
+        if click[0] == 1 and action != None:
+            if action == "play":
+                main_loop()
+                quit()
+            elif action == "options":
+                quit()
+            elif action == "exit":
+                quit()
 def autominer():
     global coins
     global autog
@@ -90,7 +104,6 @@ def main_loop():
                 if coins == 2147483647:
                     print("You Beat the game")
 
-        # drawing stuff
 
         gameDisplay.fill(white)
         draw_text("Memes Clicker", black, white, 400, 100, 50)
@@ -104,9 +117,23 @@ def main_loop():
         pygame.display.update()
         clock.tick(60)
 
-
-# ending the program
-
-main_loop()
-pygame.quit()
-quit()
+while True:
+    mopos = pygame.mouse.get_pos()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            quit()
+    gameDisplay.blit(mainText, (215, 20))
+    gameDisplay.blit(version, (515, 47))
+    pygame.draw.rect(gameDisplay, black, (150, 150, rectWidth, rectHeight))
+    pygame.draw.rect(gameDisplay, black, (350, 150, rectWidth, rectHeight))
+    pygame.draw.rect(gameDisplay, black, (550, 150, rectWidth, rectHeight))
+    pygame.draw.rect(gameDisplay, green, (152, 152, (rectWidth-4), (rectHeight-4)))
+    pygame.draw.rect(gameDisplay, green, (352, 152, (rectWidth-4), (rectHeight-4)))
+    pygame.draw.rect(gameDisplay, green, (552, 152, (rectWidth-4), (rectHeight-4)))
+    button(152, 152, (rectWidth-4), (rectHeight-4), "play")
+    button(352, 152, (rectWidth-4), (rectHeight-4), "options")
+    button(552, 152, (rectWidth-4), (rectHeight-4), "exit")
+    gameDisplay.blit(startButton, (178, 165))
+    gameDisplay.blit(menuButton, (367, 165))
+    gameDisplay.blit(exitButton, (583, 165))
+    pygame.display.update()
